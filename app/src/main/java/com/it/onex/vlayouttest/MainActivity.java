@@ -18,11 +18,15 @@ import com.alibaba.android.vlayout.layout.FloatLayoutHelper;
 import com.alibaba.android.vlayout.layout.GridLayoutHelper;
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper;
 import com.alibaba.android.vlayout.layout.OnePlusNLayoutHelper;
+import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
+import com.alibaba.android.vlayout.layout.StaggeredGridLayoutHelper;
 import com.alibaba.android.vlayout.layout.StickyLayoutHelper;
 import com.it.onex.vlayouttest.adapter.FloatLayoutAdapter;
 import com.it.onex.vlayouttest.adapter.GridHelperAdapter;
 import com.it.onex.vlayouttest.adapter.LinearAdapter;
 import com.it.onex.vlayouttest.adapter.OneToNAdapter;
+import com.it.onex.vlayouttest.adapter.SingleLayoutAdapter;
+import com.it.onex.vlayouttest.adapter.StaggeredGridLayoutAdapter;
 import com.it.onex.vlayouttest.adapter.StickyLayoutAdapter;
 
 import java.util.ArrayList;
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> lists = new ArrayList<>();
     private ArrayList<Integer> imgSrc = new ArrayList<>();
     private ArrayList<Integer> goodSrc = new ArrayList<>();
+    private ArrayList<Integer> stagSrc = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
 //        //FixLayoutHelper
 //        FixLayoutHelper fixHelper=new FixLayoutHelper(0,0);
-//        adapters.addAdapter(new FixLayoutAdapter(fixHelper));
+//        adapters.addAdapter(new FixLayoutAdapter(this,fixHelper));
 //
-//        //ColumnLayoutHelper
+        //ColumnLayoutHelper
 //        ColumnLayoutHelper columnLayoutHelper=new ColumnLayoutHelper();
-//        adapters.addAdapter(new FixLayoutAdapter(columnLayoutHelper));
+//        adapters.addAdapter(new FixLayoutAdapter(this,columnLayoutHelper));
 
 
         //floatLayoutHelper
@@ -75,14 +80,22 @@ public class MainActivity extends AppCompatActivity {
         adapters.addAdapter(new FloatLayoutAdapter(this,layoutHelper));
 
 
+        //singleHelper
+        SingleLayoutHelper singHelper=new SingleLayoutHelper();
+        singHelper.setBgColor(R.color.colorPrimary);
+        singHelper.setMargin(5,0,5,5);
+        adapters.addAdapter(new SingleLayoutAdapter(this,singHelper));
+
+
         initGridData();
         // 进行Grid布局
         GridLayoutHelper gridHelper = new GridLayoutHelper(5);
         gridHelper.setMarginTop(30);
-
 //        gridHelper.setWeights(new float[]{20.0f,20.0f,20.0f,20.0f,20.0f});
         //设置垂直方向条目的间隔
         gridHelper.setVGap(5);
+        //设置水平方向条目的间隔
+        gridHelper.setHGap(5);
         gridHelper.setMarginLeft(30);
         gridHelper.setMarginBottom(30);
         //自动填充满布局
@@ -96,8 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         initOnePlusData();
-        //onePlusNHelper  
-        // TODO: 2018/1/3 这里需要进行仔细的研究
+        //onePlusNHelper
         OnePlusNLayoutHelper helper = new OnePlusNLayoutHelper();
         helper.setBgColor(R.color.colorPrimary);
         helper.setPadding(5, 5, 5, 5);
@@ -130,12 +142,27 @@ public class MainActivity extends AppCompatActivity {
 
         //Linear 布局
         LinearLayoutHelper linearHelper = new LinearLayoutHelper(10);
-
         adapters.addAdapter(new LinearAdapter(this,lists, linearHelper));
+
+
+        //StaggerGridLayoutHelper
+        initStagData();
+        StaggeredGridLayoutHelper stagHelp=new StaggeredGridLayoutHelper(2);
+        stagHelp.setHGap(5);
+        stagHelp.setVGap(5);
+        adapters.addAdapter(new StaggeredGridLayoutAdapter(this,stagSrc,stagHelp));
 
 
         rvList.setAdapter(adapters);
 
+    }
+
+    private void initStagData() {
+        stagSrc.add(R.mipmap.g1);
+        stagSrc.add(R.mipmap.zl);
+        stagSrc.add(R.mipmap.ic);
+        stagSrc.add(R.mipmap.g4);
+        stagSrc.add(R.mipmap.g5);
     }
 
     private void initOnePlusData() {
